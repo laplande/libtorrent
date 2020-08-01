@@ -10,6 +10,9 @@ import package ;
 import virtual-target ;
 import cast ;
 
+VERSION = 2.0.0 ;
+SOVERSION = 11 ;
+
 BOOST_ROOT = [ modules.peek : BOOST_ROOT ] ;
 CXXFLAGS = [ modules.peek : CXXFLAGS ] ;
 LDFLAGS = [ modules.peek : LDFLAGS ] ;
@@ -46,8 +49,6 @@ else
 }
 
 use-project /try_signal : ./deps/try_signal ;
-
-VERSION = 2.0.0 ;
 
 rule linking ( properties * )
 {
@@ -355,7 +356,7 @@ rule tag ( name : type ? : property-set )
 	if $(type) = SHARED_LIB &&
 		( ! ( [ $(property-set).get <target-os> ] in windows cygwin ) )
 	{
-		name = $(name).$(VERSION) ;
+		name = $(name).$(SOVERSION) ;
 	}
 
 	return $(name) ;
