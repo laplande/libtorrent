@@ -37,10 +37,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "libtorrent/aux_/cpuid.hpp"
 #include "libtorrent/aux_/disable_warnings_push.hpp"
 
+//#include <boost/predef/other/endian.h>
 #include <boost/crc.hpp>
 #if (defined _MSC_VER && _MSC_VER >= 1600 && (defined _M_IX86 || defined _M_X64))
 #include <nmmintrin.h>
 #endif
+
+#define BOOST_ENDIAN_BIG_BYTE 1
 
 #include "libtorrent/aux_/disable_warnings_pop.hpp"
 
@@ -78,7 +81,13 @@ namespace libtorrent {
 		}
 #endif
 
+#if BOOST_ENDIAN_BIG_BYTE
+		boost::crc_optimal<32, 0x416FDC1E, 0xFFFFFFFF, 0xFFFFFFFF, true, true> crc;
+#elif BOOST_ENDIAN_LITTLE_BYTE
 		boost::crc_optimal<32, 0x1EDC6F41, 0xFFFFFFFF, 0xFFFFFFFF, true, true> crc;
+#else
+#error "don't know endian of the target"
+#endif
 		crc.process_bytes(&v, 4);
 		return crc.checksum();
 	}
@@ -143,7 +152,13 @@ namespace libtorrent {
 		}
 #endif
 
+#if BOOST_ENDIAN_BIG_BYTE
+		boost::crc_optimal<32, 0x416FDC1E, 0xFFFFFFFF, 0xFFFFFFFF, true, true> crc;
+#elif BOOST_ENDIAN_LITTLE_BYTE
 		boost::crc_optimal<32, 0x1EDC6F41, 0xFFFFFFFF, 0xFFFFFFFF, true, true> crc;
+#else
+#error "don't know endian of the target"
+#endif
 		crc.process_bytes(buf, std::size_t(num_words) * 8);
 		return crc.checksum();
 	}

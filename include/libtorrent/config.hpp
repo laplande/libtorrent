@@ -511,6 +511,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TORRENT_DECLARE_DUMMY(x, y)
 #endif // BOOST_NO_EXCEPTIONS
 
+#define TORRENT_HAS_SSE 0
+
 // SSE is x86 / amd64 specific. On top of that, we only
 // know how to access it on msvc and gcc (and gcc compatibles).
 // GCC requires the user to enable SSE support in order for
